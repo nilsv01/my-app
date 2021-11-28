@@ -1,67 +1,76 @@
 import './App.css';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, FormControl, TextField} from '@material-ui/core';
-import { connect } from 'react-redux';
-import {addMoment,addDaily,addTotal,resetMoment,resetDaily,resetTotal,subMoment} from './action';
-import AsyncStorage from '@react-native-community/async-storage';
 import Axios from  'axios';
 
 function App() { 
 
-  this.vMoment = Number;
-  this.vDaily = Number;
-  this.vTotal = Number;
+  const [visitorMoment, setVisitorMoment] = useState(0);
+  const [visitorDaily, setVisitorDaily] = useState(0);
+  const [visitorTotal, setVisitorTotal] = useState(0);
 
-  const {visitor, setVisitor} = useState([]);
-  const {visitorDaily, setVisitorDaily} = useState(0);
-  const {visitorTotal, setVisitorTotal} = useState(0);
-
-  const changeVisitor = () =>{
-    getVisitor;
-    this.vMoment = visitor.map((val,key) => {
-      return val.visitorMoment
-    });
-   }
 
   const addVisitor = () => {
     Axios.post('http://localhost:3001/add').then(() =>
     {console.log("success add");});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorMoment').then((response) => {setVisitorMoment(response.data);});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorDaily').then((response) => {setVisitorDaily(response.data);});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorTotal').then((response) => {setVisitorTotal(response.data);});
+    setTimeout(2000);
   }
 
   const subVisitor = () => {
     Axios.post('http://localhost:3001/sub').then(() =>
     {console.log("success sub");});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorMoment').then((response) => {setVisitorMoment(response.data);});
+    setTimeout(2000);
   }
 
   const resMoment = () => {
     Axios.post('http://localhost:3001/resMoment').then(() =>
     {console.log("success add");});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorMoment').then((response) => {setVisitorMoment(response.data);});
+    setTimeout(2000);
   }
 
   const resDaily = () => {
     Axios.post('http://localhost:3001/resDaily').then(() =>
     {console.log("success add");});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorDaily').then((response) => {setVisitorDaily(response.data);});
+    setTimeout(2000);
   }
 
   const resTotal = () => {
     Axios.post('http://localhost:3001/resTotal').then(() =>
     {console.log("success add");});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorTotal').then((response) => {setVisitorTotal(response.data);});    
+    setTimeout(2000);
   }
 
   const getVisitor = () => {
-    Axios.get('http://localhost:3001/getVisitorMoment').then((response) =>
-    { setVisitor(response.data)
-      console.log(response);});
+    
+    Axios.get('http://localhost:3001/getVisitorMoment').then((response) => {setVisitorMoment(response.data);});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorDaily').then((response) => {setVisitorDaily(response.data);});
+    setTimeout(2000);
+    Axios.get('http://localhost:3001/getVisitorTotal').then((response) => {setVisitorTotal(response.data);});
   }
 
   const getVisitorDaily = () => {
     Axios.get('http://localhost:3001/getVisitorDaily').then((response) =>
-    {console.log(response);});
+    { setVisitorDaily(response.data);});
   }
 
   const getVisitorTotal = () => {
     Axios.get('http://localhost:3001/getVisitorTotal').then((response) =>
-    {console.log(response);});
+    { setVisitorTotal(response.data);});
   }
 
   /*
@@ -163,29 +172,28 @@ function App() {
     }
   };
   render(){*/
-  changeVisitor;
+
   return (
     <div className="App">
       <header className="App-header">
         <Box className="App-Header">
           <h2 className="App-Dialog-Moment">Aktuelle Besucher</h2>
           <div style={{ height: 300, width: '90%' }}>
-            <button variant="outlined" color="primary" className ="App-Moment-Add-Button" onClick={addVisitor}>
-                    +
-                  </button>
-            <TextField
+            <Button variant="outlined" color="primary" className ="App-Moment-Add-Button" onClick={addVisitor} >
+                    +  </Button>
+                    <TextField
                             className ="App-Output-Moment" 
                             disabled={false}
                             label=""
                             type={Number}
-                            value={this.vMoment}
+                            value={visitorDaily}
                         />
-            <button variant="outlined" color="primary" className ="App-Moment-Sub-Button" onClick={subVisitor}>
+            <Button variant="outlined" color="primary" className ="App-Moment-Sub-Button" onClick={subVisitor}>
                     -
-            </button>
-            <button variant="outlined" color="primary" className ="App-Moment-Reset-Button" onClick={resMoment}>
+            </Button>
+            <Button variant="outlined" color="primary" className ="App-Moment-Reset-Button" onClick={resMoment}>
                     Reset
-            </button>
+            </Button>
           </div>
           <h2 className="App-Dialog-Daily">Heutige Besucher</h2>
           <div style={{ height: 300, width: '90%' }}>
@@ -194,11 +202,11 @@ function App() {
                             disabled={false}
                             label=""
                             type={Number}
-                            value={0}
+                            value={JSON.stringify(visitorDaily)}
                         />
-            <button variant="outlined" color="primary" className ="App-Daily-Reset-Button" onClick={resDaily}>
+            <Button variant="outlined" color="primary" className ="App-Daily-Reset-Button" onClick={resDaily}>
                     Reset
-            </button>
+            </Button>
           </div>
           <h2 className="App-Dialog-Total">Gesamte Besucher</h2>
           <div style={{ height: 300, width: '90%' }}>
@@ -207,11 +215,11 @@ function App() {
                             disabled={false}
                             label=""
                             type={Number}
-                            value={0}
+                            value={JSON.stringify(visitorTotal)}
                         />
-            <button variant="outlined" color="primary" className ="App-Daily-Total-Button" onClick={resTotal}>
+            <Button variant="outlined" color="primary" className ="App-Daily-Total-Button" onClick={resTotal}>
                     Reset
-            </button>
+            </Button>
           </div>
         </Box>
       </header>
