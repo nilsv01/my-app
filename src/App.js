@@ -1,68 +1,42 @@
 import './App.css';
 import React, { useState } from 'react';
-import { Box, Button, TextField, MuiThemeProvider, createTheme } from '@material-ui/core';
+import { Box, Button, TextField} from '@material-ui/core';
 import Axios from  'axios';
 
 function App() { 
 
-  const [visitorMoment, setVisitorMoment] = useState(0);
+  const [visitorMoment, setVisitorMoment] =  useState(0);
   const [visitorDaily, setVisitorDaily] = useState(0);
   const [visitorTotal, setVisitorTotal] = useState(0);
 
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: '#E33E7F'
-      }
-    }
-  });
-
-  const addVisitor = () => {
-    Axios.post('http://192.168.2.174:3001/add').then(() =>
-    {console.log("success add");});
-    setTimeout(3000);
-    Axios.get('http://192.168.2.174:3001/getVisitorMoment').then((response) => {setVisitorMoment(JSON.parse(JSON.stringify(response.data))[0].visitorMoment);});
-    setTimeout(3000);
-    Axios.get('http://192.168.2.174:3001/getVisitorDaily').then((response) => {setVisitorDaily(JSON.parse(JSON.stringify(response.data))[0].visitorDaily);});
-    setTimeout(3000);
-    Axios.get('http://192.168.2.174:3001/getVisitorTotal').then((response) => {setVisitorTotal(JSON.parse(JSON.stringify(response.data))[0].visitorTotal);});
-    setTimeout(12000);
+  const addVisitor = async () => {
+    const response = await Axios.post('http://192.168.2.174:4000/add')
+    setVisitorMoment(response.data.map(val => val.visitorMoment));
+    setVisitorDaily(response.data.map(val => val.visitorDaily));
+    setVisitorTotal(response.data.map(val => val.visitorTotal));
   }
   
-  const subVisitor = () => {
-    Axios.post('http://192.168.2.174:3001/sub').then(() =>
-    {console.log("success sub");});
-    setTimeout(2000);
-    Axios.get('http://192.168.2.174:3001/getVisitorMoment').then((response) => {setVisitorMoment(JSON.parse(JSON.stringify(response.data))[0].visitorMoment);});
-    setTimeout(2000);
+  const subVisitor = async () => {
+    const response = await Axios.post('http://192.168.2.174:4000/sub')
+    setVisitorMoment(response.data.map(val => val.visitorMoment));
   }
 
-  const resMoment = () => {
-    Axios.post('http://192.168.2.174:3001/resMoment').then(() =>
-    {console.log("success add");});
-    setTimeout(2000);
-    Axios.get('http://192.168.2.174:3001/getVisitorMoment').then((response) => {setVisitorMoment(JSON.parse(JSON.stringify(response.data))[0].visitorMoment);});
-    setTimeout(2000);
+  const resMoment = async () => {
+    const response = await Axios.post('http://192.168.2.174:4000/resMoment')
+    setVisitorMoment(response.data.map(val => val.visitorMoment));
   }
 
-  const resDaily = () => {
-    Axios.post('http://192.168.2.174:3001/resDaily').then(() =>
-    {console.log("success add");});
-    setTimeout(2000);
-    Axios.get('http://192.168.2.174:3001/getVisitorDaily').then((response) => {setVisitorDaily(JSON.parse(JSON.stringify(response.data))[0].visitorDaily);});
-    setTimeout(2000);
+  const resDaily = async () => {
+    const response = await Axios.post('http://192.168.2.174:4000/resDaily')
+    setVisitorDaily(response.data.map(val => val.visitorDaily));
   }
 
-  const resTotal = () => {
-    Axios.post('http://192.168.2.174:3001/resTotal').then(() =>
-    {console.log("success add");});
-    setTimeout(2000);
-    Axios.get('http://192.168.2.174:3001/getVisitorTotal').then((response) => {setVisitorTotal(JSON.parse(JSON.stringify(response.data))[0].visitorTotal);});    
-    setTimeout(2000);
+  const resTotal = async () => {
+    const response = await Axios.post('http://192.168.2.174:4000/resTotal')
+    setVisitorTotal(response.data.map(val => val.visitorTotal));
   }
 
   return (
-    <MuiThemeProvider theme={theme}>
     <div className="App">
       <header className="App-header">
         <Box className="App-Header">
@@ -115,7 +89,6 @@ function App() {
         </Box>
       </header>
     </div>
-    </MuiThemeProvider>
   );
  }
 //* test
